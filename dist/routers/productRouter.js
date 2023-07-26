@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const productController_1 = require("../controllers/productController");
-const productRouter = (0, express_1.Router)();
-productRouter.get("/:id", productController_1.getProductbyCategory);
-productRouter.get("/getProduct/:id", productController_1.getProductById);
-productRouter.post("/create", productController_1.addProduct);
-productRouter.patch("/update/:id", productController_1.updateProduct);
-productRouter.delete("/delete/:id", productController_1.deleteProduct);
-exports.default = productRouter;
-//# sourceMappingURL=productRouter.js.map
+import { Router } from "express";
+import { addProduct, deleteProduct, getProductById, getProductbyCategory, updateProduct } from "../controllers/productController";
+const productRouter = Router();
+productRouter.get("/:id", getProductbyCategory);
+productRouter.get("/getProduct/:id", getProductById);
+productRouter.post("/create", addProduct);
+productRouter.patch("/update/:id", updateProduct);
+productRouter.delete("/delete/:id", deleteProduct);
+export default productRouter;

@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,20 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOrderbyId = exports.allOrdersofUser = exports.createOrder = void 0;
-const cartModel_1 = require("../models/cartModel");
-const orderModel_1 = require("../models/orderModel");
-const userModel_1 = require("../models/userModel");
+import { Cart } from "../models/cartModel";
+import { Order } from "../models/orderModel";
+import { UserRole } from "../models/userModel";
 // for creating order
-const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+export const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, shippingAddress, paymentMethod } = req.body;
     try {
-        const cart = yield cartModel_1.Cart.findOne({ userId });
+        const cart = yield Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ error: "Cart not found" });
         }
-        const newOrder = new orderModel_1.Order({
+        const newOrder = new Order({
             userId,
             products: cart.products,
             total: cart.products.reduce((total, item) => total + item.price * item.quantity, 0),
@@ -38,9 +35,8 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({ error: "Server error." });
     }
 });
-exports.createOrder = createOrder;
 //  for order history of user
-const allOrdersofUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+export const allOrdersofUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { id } = req.params;
     const { userId, role } = req.body;
     let { p, l } = req.query;
@@ -50,13 +46,13 @@ const allOrdersofUser = (req, res) => __awaiter(void 0, void 0, void 0, function
     l ? limit = +l : limit = 10;
     try {
         let orders;
-        if (role === userModel_1.UserRole.ADMIN) {
-            orders = yield orderModel_1.Order.find({ userId: id }).sort({ createdAt: -1 })
+        if (role === UserRole.ADMIN) {
+            orders = yield Order.find({ userId: id }).sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit);
         }
         else {
-            orders = yield orderModel_1.Order.find({ userId }).sort({ createdAt: -1 })
+            orders = yield Order.find({ userId }).sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit);
         }
@@ -70,17 +66,16 @@ const allOrdersofUser = (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(500).send({ error: 'Server error' });
     }
 });
-exports.allOrdersofUser = allOrdersofUser;
 // for getting order details
-const getOrderbyId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+export const getOrderbyId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, userId, role } = req.body;
     try {
         let order;
-        if (role === userModel_1.UserRole.ADMIN) {
-            order = yield orderModel_1.Order.findById(id);
+        if (role === UserRole.ADMIN) {
+            order = yield Order.findById(id);
         }
         else {
-            order = yield orderModel_1.Order.findOne({ _id: id, userId: userId });
+            order = yield Order.findOne({ _id: id, userId: userId });
         }
         if (!order) {
             return res.status(404).json({ error: 'Order not found' });
@@ -92,5 +87,3 @@ const getOrderbyId = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(500).send({ error: "server error" });
     }
 });
-exports.getOrderbyId = getOrderbyId;
-//# sourceMappingURL=orderController.js.map

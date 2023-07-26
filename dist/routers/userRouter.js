@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const userController_1 = require("../controllers/userController");
-const userRouter = (0, express_1.Router)();
-userRouter.post("/signup", userController_1.signup);
-userRouter.post("/login", userController_1.login);
-exports.default = userRouter;
-//# sourceMappingURL=userRouter.js.map
+import { Router } from "express";
+import { login, signup } from "../controllers/userController";
+const userRouter = Router();
+userRouter.post("/signup", signup);
+userRouter.post("/login", login);
+export default userRouter;

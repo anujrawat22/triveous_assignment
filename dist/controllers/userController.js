@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,23 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.signup = void 0;
-const userModel_1 = require("../models/userModel");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+import { User } from "../models/userModel";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+export const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, email, password, roles } = req.body;
-        const existingUser = yield userModel_1.User.findOne({ email });
+        const existingUser = yield User.findOne({ email });
         if (existingUser) {
             return res.status(400).send({ msg: "User already exists" });
         }
-        const hash = yield bcrypt_1.default.hash(password, 5);
-        const user = new userModel_1.User({ email, username, password: hash, roles });
+        const hash = yield bcrypt.hash(password, 5);
+        const user = new User({ email, username, password: hash, roles });
         yield user.save();
         res.status(201).send({ msg: "Registration successful" });
     }
@@ -33,19 +27,18 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send({ msg: "Failed to create User" });
     }
 });
-exports.signup = signup;
-const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+export const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const user = yield userModel_1.User.findOne({ email });
+        const user = yield User.findOne({ email });
         if (!user) {
             return res.status(404).send({ msg: "User doesn't exist, Please login" });
         }
-        const isPasswordValid = yield bcrypt_1.default.compare(password, user.password);
+        const isPasswordValid = yield bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ msg: 'Invalid credentials' });
         }
-        const token = jsonwebtoken_1.default.sign({ userId: user._id, username: user.username, roles: user.roles }, process.env.SECRET_KEY);
+        const token = jwt.sign({ userId: user._id, username: user.username, roles: user.roles }, process.env.SECRET_KEY);
         res.status(201).send({ msg: "Login Successful", token });
     }
     catch (error) {
@@ -53,5 +46,3 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send({ msg: "Failed to login User" });
     }
 });
-exports.login = login;
-//# sourceMappingURL=userController.js.map
