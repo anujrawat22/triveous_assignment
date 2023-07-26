@@ -1,11 +1,11 @@
 
  import e, { Request , Response } from "express";
-import { Cart } from "../models/cartModel";
+import { Cart, ICart } from "../models/cartModel";
 
  export const getCart = async(req : Request , res : Response)=>{
     const {userId} = req.body;
     try {
-        const cart = await Cart.findOne({userId})
+        const cart : ICart = await Cart.findOne({userId})
 
         if(!cart){
             return res.status(404).json({ error : 'Cart not found'})
@@ -21,7 +21,7 @@ import { Cart } from "../models/cartModel";
  export const getCartbyId = async(req : Request,res  : Response)=>{
     const { id } = req.params;
     try {
-      const cart = await Cart.findOne({userId : id})
+      const cart : ICart = await Cart.findOne({userId : id})
       if(!cart){
         return res.status(404).json({ error : 'Cart not found'})
       }
@@ -36,9 +36,9 @@ import { Cart } from "../models/cartModel";
 
 
  export const addtoCart = async(req : Request, res : Response)=>{
-    const { userId , productId , quantity } = req.body;
+    const { userId , productId ,price, quantity } = req.body;
     try {
-        let cart = await Cart.findOne({userId})
+        let cart : ICart = await Cart.findOne({userId})
 
         if(!cart){
              cart = new Cart({userId , products : []})
@@ -51,7 +51,7 @@ import { Cart } from "../models/cartModel";
        if(existingProductIndex !== -1){
         cart.products[existingProductIndex].quantity += quantity;
        }else{
-        cart.products.push({productId ,quantity})
+        cart.products.push({productId ,price,quantity})
        }
 
        await cart.save()
@@ -66,7 +66,7 @@ import { Cart } from "../models/cartModel";
  export const deleteCartItem = async(req : Request , res : Response)=>{
     const { userId , productId } = req.body;
     try {
-        const cart = await Cart.findOne({userId})
+        const cart : ICart= await Cart.findOne({userId})
 
         if(!cart){
             return res.status(404).json({error : "Cart not found."})
@@ -91,7 +91,7 @@ import { Cart } from "../models/cartModel";
  export const updateCart =async (req : Request, res:Response) => {
     const {userId, productId , quantity} = req.body;
     try {
-        const cart = await Cart.findOne({userId})
+        const cart : ICart = await Cart.findOne({userId})
 
         if(!cart){
             return res.status(404).json({error : "Cart not found"})
