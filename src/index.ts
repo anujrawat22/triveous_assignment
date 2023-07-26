@@ -8,7 +8,7 @@ import cartRouter from "./routes/cartRouter";
 import orderRouter from "./routes/orderRouter";
 import { authMiddlware } from "./middlewares/authenticationMiddleware";
 import homeRouter from "./routes/router";
-
+import cors from 'cors'
 
 dotenv.config();
 
@@ -25,14 +25,19 @@ const options = {
       title: 'Trevious ecommerce assignment',
       version: '1.0.0',
     },
+    servers : [
+      {
+        url : "https://trivious.onrender.com"
+      }
+    ]
   },
-  apis: ['./src/routes*.ts'], // files containing annotations as above
+  apis: ['./routes*.ts'], // files containing annotations as above
 };
 
 const openapiSpecification = swaggerJsdoc(options);
 
 app.use(express.json());
-
+app.use(cors())
 app.use("/docs",swaggerUi.serve,swaggerUi.setup(openapiSpecification))
 app.use("/api",homeRouter)
 app.use("/api/user", userRouter);
