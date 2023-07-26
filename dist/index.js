@@ -15,17 +15,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const db_1 = require("./config/db");
-const userRouter_1 = __importDefault(require("./routers/userRouter"));
-const categoryRouter_1 = __importDefault(require("./routers/categoryRouter"));
-const productRouter_1 = __importDefault(require("./routers/productRouter"));
-const cartRouter_1 = __importDefault(require("./routers/cartRouter"));
-const orderRouter_1 = __importDefault(require("./routers/orderRouter"));
+const userRouter_1 = __importDefault(require("./routes/userRouter"));
+const categoryRouter_1 = __importDefault(require("./routes/categoryRouter"));
+const productRouter_1 = __importDefault(require("./routes/productRouter"));
+const cartRouter_1 = __importDefault(require("./routes/cartRouter"));
+const orderRouter_1 = __importDefault(require("./routes/orderRouter"));
 const authenticationMiddleware_1 = require("./middlewares/authenticationMiddleware");
-const router_1 = __importDefault(require("./routers/router"));
+const router_1 = __importDefault(require("./routes/router"));
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Trevious ecommerce assignment',
+            version: '1.0.0',
+        },
+        servers: [
+            {
+                url: "http://localhost:8080/"
+            }
+        ]
+    },
+    apis: ['../dist/routes/*.js'], // files containing annotations as above
+};
+const openapiSpecification = (0, swagger_jsdoc_1.default)(options);
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(openapiSpecification));
 app.use("/api", router_1.default);
 app.use("/api/user", userRouter_1.default);
 app.use("/api/category", categoryRouter_1.default);
