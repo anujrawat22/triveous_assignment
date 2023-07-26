@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addtoCart, getCart, getCartbyId } from "../controllers/cartController";
+import { addtoCart, deleteCartItem, getCart, getCartbyId } from "../controllers/cartController";
 import { rbacMiddleware } from "../middlewares/authorizationMiddleware";
 import { UserRole } from "../models/userModel";
 
@@ -11,7 +11,9 @@ cartRouter.get("/usercart/:id",rbacMiddleware([UserRole.ADMIN]),getCartbyId)
 
 cartRouter.post("/create",addtoCart)
 
-cartRouter.delete(":/id",)
+cartRouter.patch("/update")
+
+cartRouter.delete("/",deleteCartItem)
 
 
 
