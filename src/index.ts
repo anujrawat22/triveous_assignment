@@ -8,10 +8,15 @@ import cartRouter from "./routers/cartRouter";
 import orderRouter from "./routers/orderRouter";
 import { authMiddlware } from "./middlewares/authenticationMiddleware";
 dotenv.config();
+import { Request, Response } from "express";
 const app = exress();
 const port = process.env.PORT;
 
 app.use(exress.json());
+
+app.get("/",(req : Request, res : Response)=>{
+res.send('<h1>Welcome to ecommerce app</h1>')
+})
 app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
