@@ -21,13 +21,12 @@ const productRouter_1 = __importDefault(require("./routers/productRouter"));
 const cartRouter_1 = __importDefault(require("./routers/cartRouter"));
 const orderRouter_1 = __importDefault(require("./routers/orderRouter"));
 const authenticationMiddleware_1 = require("./middlewares/authenticationMiddleware");
+const router_1 = __importDefault(require("./routers/router"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use(express_1.default.json());
-app.get("/", (req, res) => {
-    res.send('<h1>Welcome to ecommerce app</h1>');
-});
+app.use("/api", router_1.default);
 app.use("/api/user", userRouter_1.default);
 app.use("/api/category", categoryRouter_1.default);
 app.use("/api/product", productRouter_1.default);
