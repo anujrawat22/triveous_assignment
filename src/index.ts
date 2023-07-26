@@ -1,4 +1,4 @@
-import exress from "express";
+import express from 'express'
 import dotenv from "dotenv";
 import { connection } from "./config/db";
 import userRouter from "./routers/userRouter";
@@ -7,16 +7,16 @@ import productRouter from "./routers/productRouter";
 import cartRouter from "./routers/cartRouter";
 import orderRouter from "./routers/orderRouter";
 import { authMiddlware } from "./middlewares/authenticationMiddleware";
+import homeRouter from "./routers/router";
+
 dotenv.config();
-import { Request, Response } from "express";
-const app = exress();
+
+const app = express();
 const port = process.env.PORT;
 
-app.use(exress.json());
+app.use(express.json());
 
-app.get("/",(req : Request, res : Response)=>{
-res.send('<h1>Welcome to ecommerce app</h1>')
-})
+app.use("/api",homeRouter)
 app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
