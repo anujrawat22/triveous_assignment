@@ -1,21 +1,39 @@
 import express from 'express'
 import dotenv from "dotenv";
 import { connection } from "./config/db";
-import userRouter from "./routers/userRouter";
-import categoryRouter from "./routers/categoryRouter";
-import productRouter from "./routers/productRouter";
-import cartRouter from "./routers/cartRouter";
-import orderRouter from "./routers/orderRouter";
+import userRouter from "./routes/userRouter";
+import categoryRouter from "./routes/categoryRouter";
+import productRouter from "./routes/productRouter";
+import cartRouter from "./routes/cartRouter";
+import orderRouter from "./routes/orderRouter";
 import { authMiddlware } from "./middlewares/authenticationMiddleware";
-import homeRouter from "./routers/router";
+import homeRouter from "./routes/router";
+
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
+import swaggerUi from 'swagger-ui-express';
+
+import swaggerJsdoc from 'swagger-jsdoc';
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Trevious ecommerce assignment',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./src/routes*.ts'], // files containing annotations as above
+};
+
+const openapiSpecification = swaggerJsdoc(options);
 
 app.use(express.json());
 
+app.use("/docs",swaggerUi.serve,swaggerUi.setup(openapiSpecification))
 app.use("/api",homeRouter)
 app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
