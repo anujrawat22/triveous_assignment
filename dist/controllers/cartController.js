@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,11 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Cart } from "../models/cartModel";
-export const getCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateCart = exports.deleteCartItem = exports.addtoCart = exports.getCartbyId = exports.getCart = void 0;
+const cartModel_1 = require("../models/cartModel");
+const getCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.body;
     try {
-        const cart = yield Cart.findOne({ userId });
+        const cart = yield cartModel_1.Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ error: 'Cart not found' });
         }
@@ -22,10 +25,11 @@ export const getCart = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(500).json({ error: "Server error" });
     }
 });
-export const getCartbyId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getCart = getCart;
+const getCartbyId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const cart = yield Cart.findOne({ userId: id });
+        const cart = yield cartModel_1.Cart.findOne({ userId: id });
         if (!cart) {
             return res.status(404).json({ error: 'Cart not found' });
         }
@@ -36,12 +40,13 @@ export const getCartbyId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(500).json({ error: "Server error" });
     }
 });
-export const addtoCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getCartbyId = getCartbyId;
+const addtoCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, productId, price, quantity } = req.body;
     try {
-        let cart = yield Cart.findOne({ userId });
+        let cart = yield cartModel_1.Cart.findOne({ userId });
         if (!cart) {
-            cart = new Cart({ userId, products: [] });
+            cart = new cartModel_1.Cart({ userId, products: [] });
         }
         const existingProductIndex = cart.products.findIndex((item) => item.productId === productId);
         if (existingProductIndex !== -1) {
@@ -58,10 +63,11 @@ export const addtoCart = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(500).json({ error: "Server error" });
     }
 });
-export const deleteCartItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addtoCart = addtoCart;
+const deleteCartItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, productId } = req.body;
     try {
-        const cart = yield Cart.findOne({ userId });
+        const cart = yield cartModel_1.Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ error: "Cart not found." });
         }
@@ -80,10 +86,11 @@ export const deleteCartItem = (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.status(500).json({ error: "Server error" });
     }
 });
-export const updateCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.deleteCartItem = deleteCartItem;
+const updateCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, productId, quantity } = req.body;
     try {
-        const cart = yield Cart.findOne({ userId });
+        const cart = yield cartModel_1.Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ error: "Cart not found" });
         }
@@ -100,3 +107,4 @@ export const updateCart = (req, res) => __awaiter(void 0, void 0, void 0, functi
     catch (error) {
     }
 });
+exports.updateCart = updateCart;
