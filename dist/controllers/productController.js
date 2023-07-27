@@ -43,23 +43,52 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getProductById = getProductById;
 const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { title, price, description, specification, category_id, images, mainImage, brand, model, colours, warrantyPeriod } = req.body;
     try {
+        const findProduct = yield productModel_1.Product.findOne({ title, model, brand });
+        if (findProduct) {
+            return res.status(400).json({ error: "Product already exists , try updating the product" });
+        }
+        const product = new productModel_1.Product({ title, price, description, specification, category_id, images, mainImage, brand, model, colours, warrantyPeriod });
+        yield product.save();
+        return res.status(201).send({ msg: "Product created succesfully" });
     }
     catch (error) {
+        console.log("Error creating the product", error);
+        res.status(500).send({ error: "Server error" });
     }
 });
 exports.addProduct = addProduct;
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { payload } = req.body;
     try {
+        const product = yield productModel_1.Product.findById(id);
+        if (!product) {
+            return res.status(404).send({ error: "Product not found" });
+        }
+        yield productModel_1.Product.findByIdAndUpdate(id, payload);
+        return res.status(201).send({ msg: `Product with id - ${id} updated`, data: product });
     }
     catch (error) {
+        console.log("Error udating the product");
+        res.status(500).send({ error: "Server error" });
     }
 });
 exports.updateProduct = updateProduct;
 const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
     try {
+        const product = yield productModel_1.Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ error: "Product doesn't exists" });
+        }
+        yield productModel_1.Product.findByIdAndDelete(id);
+        return res.status(204).send({ msg: `Product with id - ${id} deleted sucessfully` });
     }
     catch (error) {
+        console.log("Error deleting the product");
+        res.status(500).send({ error: "Server error" });
     }
 });
 exports.deleteProduct = deleteProduct;
