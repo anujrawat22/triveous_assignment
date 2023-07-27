@@ -5,15 +5,61 @@ import { UserRole } from "../models/userModel";
 
 const cartRouter = Router()
 
+/**
+ * @openapi
+ * tags : 
+ *      name : Cart     
+ */
+
+/**
+ * @openapi
+ * /api/cart/:
+ *    get: 
+ *       summary : This is for the user to signup
+ *       tags : [Cart]
+ */
+
 cartRouter.get("/",getCart)
 
+
+/**
+ * @openapi
+ * /api/cart/usercart/:id:
+ *    get: 
+ *       summary : This is for the user to signup
+ *       tags : [Cart]
+ */
 cartRouter.get("/usercart/:id",rbacMiddleware([UserRole.ADMIN]),getCartbyId)
 
+
+/**
+ * @openapi
+ * /api/cart/create:
+ *    get: 
+ *       summary : This is for the user to signup
+ *       tags : [Cart]
+ */
 cartRouter.post("/create",addtoCart)
 
-cartRouter.patch("/update",updateCart)
 
-cartRouter.delete("/",deleteCartItem)
+/**
+ * @openapi
+ * /api/cart/update/:productId:
+ *    patch: 
+ *       summary : This is for the user to signup
+ *       tags : [Cart]
+ */
+cartRouter.patch("/update/:productId",updateCart)
+
+
+/**
+ * @openapi
+ * /api/cart/:productId:
+ *    delete: 
+ *       summary : This is for the user to signup
+ *       tags : [Cart]
+ */
+cartRouter.delete("/:productId",deleteCartItem)
 
 
 

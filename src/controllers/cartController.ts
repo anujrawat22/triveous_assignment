@@ -64,7 +64,8 @@ import { Cart, ICart } from "../models/cartModel";
  }
 
  export const deleteCartItem = async(req : Request , res : Response)=>{
-    const { userId , productId } = req.body;
+    const { userId  } = req.body;
+    const { productId } = req.params;
     try {
         const cart : ICart= await Cart.findOne({userId})
 
@@ -72,7 +73,7 @@ import { Cart, ICart } from "../models/cartModel";
             return res.status(404).json({error : "Cart not found."})
         }
 
-        const existingProductIndex = cart.products.findIndex((item) => item.productId === productId)
+        const existingProductIndex = cart.products.findIndex((item) => item.productId.toString() === productId)
 
         if(existingProductIndex !== -1){
             cart.products.splice(existingProductIndex, 1)
@@ -89,15 +90,16 @@ import { Cart, ICart } from "../models/cartModel";
  }
 
  export const updateCart =async (req : Request, res:Response) => {
-    const {userId, productId , quantity} = req.body;
-    try {
+    const {userId , quantity} = req.body;
+    const { productId} = req.params
+    try { 
         const cart : ICart = await Cart.findOne({userId})
 
         if(!cart){
             return res.status(404).json({error : "Cart not found"})
         }
 
-        const existingProductIndex = cart.products.findIndex((item)=> item.productId === productId)
+        const existingProductIndex = cart.products.findIndex((item)=> item.productId.toString() === productId)
 
         if(existingProductIndex !== -1){
             cart.products[existingProductIndex].quantity = quantity;

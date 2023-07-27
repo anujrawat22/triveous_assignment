@@ -18,13 +18,13 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { username, email, password, roles } = req.body;
+        const { username, email, contact, password, roles } = req.body;
         const existingUser = yield userModel_1.User.findOne({ email });
         if (existingUser) {
             return res.status(400).send({ msg: "User already exists" });
         }
         const hash = yield bcrypt_1.default.hash(password, 5);
-        const user = new userModel_1.User({ email, username, password: hash, roles });
+        const user = new userModel_1.User({ email, username, password: hash, contact: +contact, roles });
         yield user.save();
         res.status(201).send({ msg: "Registration successful" });
     }
@@ -46,6 +46,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(401).json({ msg: 'Invalid credentials' });
         }
         const token = jsonwebtoken_1.default.sign({ userId: user._id, username: user.username, roles: user.roles }, process.env.SECRET_KEY);
+        res.cookie('token', token);
         res.status(201).send({ msg: "Login Successful", token });
     }
     catch (error) {

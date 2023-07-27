@@ -9,6 +9,7 @@ import orderRouter from "./routes/orderRouter";
 import { authMiddlware } from "./middlewares/authenticationMiddleware";
 import homeRouter from "./routes/router";
 import cors from 'cors'
+import { Request, Response } from 'express';
 
 dotenv.config();
 
@@ -22,16 +23,16 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Trevious ecommerce assignment',
+      title: 'Trevious ecommerce app',
       version: '1.0.0',
     },
     servers : [
       {
-        url : "https://trivious.onrender.com"
+        url : "http://localhost:8080/"
       }
     ]
   },
-  apis: ['./routes/*.ts'], // files containing annotations as above
+  apis: [ './src/index.ts','./src/routes/*.ts'], // files containing annotations as above
 };
 
 const openapiSpecification = swaggerJsdoc(options);
@@ -40,11 +41,26 @@ app.use(express.json());
 app.use(cors())
 app.use("/docs",swaggerUi.serve,swaggerUi.setup(openapiSpecification))
 app.use("/api",homeRouter)
+
 app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", authMiddlware, cartRouter);
 app.use("/api/order", authMiddlware, orderRouter);
+
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
+app.get('/', (req:Request, res : Response) => {
+  res.send('Hello World!');
+});
+
 
 app.listen(port, async () => {
   try {

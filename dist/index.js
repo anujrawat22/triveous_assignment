@@ -32,7 +32,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Trevious ecommerce assignment',
+            title: 'Trevious ecommerce app',
             version: '1.0.0',
         },
         servers: [
@@ -41,7 +41,7 @@ const options = {
             }
         ]
     },
-    apis: ['../dist/routes/*.js'], // files containing annotations as above
+    apis: ['./src/index.ts', './src/routes/*.ts'], // files containing annotations as above
 };
 const openapiSpecification = (0, swagger_jsdoc_1.default)(options);
 app.use(express_1.default.json());
@@ -53,6 +53,18 @@ app.use("/api/category", categoryRouter_1.default);
 app.use("/api/product", productRouter_1.default);
 app.use("/api/cart", authenticationMiddleware_1.authMiddlware, cartRouter_1.default);
 app.use("/api/order", authenticationMiddleware_1.authMiddlware, orderRouter_1.default);
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield db_1.connection;

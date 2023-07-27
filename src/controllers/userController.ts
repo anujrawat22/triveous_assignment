@@ -5,7 +5,8 @@ import bcrypt from 'bcrypt'
 
 export const signup = async(req : Request,res : Response)=>{
     try {
-        const { username, email, password, roles } = req.body;
+      
+        const { username, email,contact, password, roles } = req.body;
     
         const existingUser = await User.findOne({ email });
     
@@ -15,7 +16,7 @@ export const signup = async(req : Request,res : Response)=>{
     
         const hash = await bcrypt.hash(password, 5);
     
-        const user =  new User({ email, username, password: hash, roles });
+        const user =  new User({ email, username, password: hash, contact : +contact,roles});
     
         await user.save();
     
@@ -45,6 +46,7 @@ export const login = async(req : Request, res : Response)=>{
     
     
           const token = jwt.sign({ userId: user._id, username: user.username, roles: user.roles }, process.env.SECRET_KEY);
+          res.cookie('token',token)
           res.status(201).send({msg : "Login Successful" , token})
       } catch (error) {
         console.log("Login error", error);

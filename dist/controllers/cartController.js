@@ -65,13 +65,14 @@ const addtoCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.addtoCart = addtoCart;
 const deleteCartItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId, productId } = req.body;
+    const { userId } = req.body;
+    const { productId } = req.params;
     try {
         const cart = yield cartModel_1.Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ error: "Cart not found." });
         }
-        const existingProductIndex = cart.products.findIndex((item) => item.productId === productId);
+        const existingProductIndex = cart.products.findIndex((item) => item.productId.toString() === productId);
         if (existingProductIndex !== -1) {
             cart.products.splice(existingProductIndex, 1);
             yield cart.save();
@@ -88,13 +89,14 @@ const deleteCartItem = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.deleteCartItem = deleteCartItem;
 const updateCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId, productId, quantity } = req.body;
+    const { userId, quantity } = req.body;
+    const { productId } = req.params;
     try {
         const cart = yield cartModel_1.Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ error: "Cart not found" });
         }
-        const existingProductIndex = cart.products.findIndex((item) => item.productId === productId);
+        const existingProductIndex = cart.products.findIndex((item) => item.productId.toString() === productId);
         if (existingProductIndex !== -1) {
             cart.products[existingProductIndex].quantity = quantity;
             yield cart.save();
