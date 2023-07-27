@@ -2,6 +2,7 @@
  import e, { Request , Response } from "express";
 import { Cart, ICart } from "../models/cartModel";
 
+
  export const getCart = async(req : Request , res : Response)=>{
     const {userId} = req.body;
     try {

@@ -28,7 +28,7 @@ const options = {
     },
     servers : [
       {
-        url : "http://localhost:8080/"
+        url : "https://trivious.onrender.com"
       }
     ]
   },
