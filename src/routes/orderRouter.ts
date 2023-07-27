@@ -15,7 +15,7 @@ const orderRouter = Router()
  * @openapi
  * /api/order:
  *    post: 
- *       summary : This is for the user to get all category data
+ *       summary : This is for the user to create an order
  *       tags : [Orders]
  */
 
@@ -26,7 +26,7 @@ orderRouter.post("/",createOrder)
  * @openapi
  * /api/order/userOrder/:id:
  *    get: 
- *       summary : This is for the user to get all category data
+ *       summary : This is for the user and admin to get userorder details by id and user to get his all order history
  *       tags : [Orders]
  */
 orderRouter.get("/userOrder/:id",rbacMiddleware([UserRole.ADMIN,UserRole.USER]),allOrdersofUser)
@@ -36,7 +36,7 @@ orderRouter.get("/userOrder/:id",rbacMiddleware([UserRole.ADMIN,UserRole.USER]),
  * @openapi
  * /api/order/:id:
  *    get: 
- *       summary : This is for the user to get all category data
+ *       summary : This is for the admin to get order details and user to get his order details 
  *       tags : [Orders]
  */
 orderRouter.get("/:id",getOrderbyId)
