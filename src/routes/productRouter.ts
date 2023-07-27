@@ -1,7 +1,52 @@
 import { Router } from "express";
 import { addProduct, deleteProduct, getProductById, getProductbyCategory, updateProduct } from "../controllers/productController";
+import { rbacMiddleware } from "../middlewares/authorizationMiddleware";
+import { UserRole } from "../models/userModel";
 
 const productRouter = Router()
+
+/**
+ * @openapi
+ * components : 
+ *      schemas : 
+ *        Product : 
+ *           type : object
+ *           properties : 
+ *              title : 
+ *                 type : string
+ *                 description : Product title
+ *              price : 
+ *                 type : number
+ *                 description : product price
+ *              description : 
+ *                 type : string
+ *                 description : product description
+ *              specifiaction : 
+ *                 type : string
+ *                 description : product specs
+ *              category_id : 
+ *                 type : string
+ *                 description : id of the parent category
+ *              images : 
+ *                 type : array
+ *                 description : array of the product images
+ *              mainImage : 
+ *                 type : string
+ *                 description : product main image
+ *              brand : 
+ *                 type : string
+ *                 description : Brand name
+ *              model : 
+ *                 type : string
+ *                 description : model name of the product
+ *              colours : 
+ *                 type : array
+ *                 description : array of the colors name 
+ *              warrantyPeriod : 
+ *                 type : number
+ *                 description : warrant period of the product
+ */
+
 
 /**
  * @openapi
@@ -15,6 +60,7 @@ const productRouter = Router()
  *    get: 
  *       summary : This is for the user to signup
  *       tags : [Product]
+ *       
  */
 
 productRouter.get("/:id",getProductbyCategory)
@@ -37,8 +83,17 @@ productRouter.get("/getProduct/:id",getProductById)
  *    post: 
  *       summary : This is for the user to signup
  *       tags : [Product]
+ *       requestBody : 
+ *           required : true
+ *           content : 
+ *               application/json : 
+ *                 schema : 
+ *                    $ref : "#/components/schemas/Product"
+ *       responses : 
+ *          201 : 
+ *             description : 
  */
-productRouter.post("/create",addProduct)
+productRouter.post("/create",rbacMiddleware([UserRole.ADMIN]),addProduct)
 
 
 /**
@@ -48,7 +103,7 @@ productRouter.post("/create",addProduct)
  *       summary : This is for the user to signup
  *       tags : [Product]
  */
-productRouter.patch("/update/:id",updateProduct)
+productRouter.patch("/update/:id",rbacMiddleware([UserRole.ADMIN]),updateProduct)
 
 
 /**
@@ -58,6 +113,6 @@ productRouter.patch("/update/:id",updateProduct)
  *       summary : This is for the user to signup
  *       tags : [Product]
  */
-productRouter.delete("/delete/:id",deleteProduct)
+productRouter.delete("/delete/:id",rbacMiddleware([UserRole.ADMIN]),deleteProduct)
 
 export default productRouter
