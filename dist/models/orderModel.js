@@ -26,6 +26,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
 // models/order.ts
 const mongoose_1 = __importStar(require("mongoose"));
+/**
+ * @openapi
+ * components:
+ *  schemas :
+ *    OrderRes :
+ *      type : object
+ *      required :
+ *         - userId
+ *         - products
+ *         - total
+ *         - shippingAddress
+ *         - paymentMethod
+ *         - paymentStatus
+ *         - status
+ *         - createdAt
+ *      properties :
+ *         userId :
+ *            type : string
+ *            default : ObjectId('64ab9737fb19c893fd4ea6fe')
+ *         total :
+ *             type : number
+ *             default : 2
+ *          shippingAddress :
+ *              type : string
+ *              default : sudhowala,dehradun
+ *          paymentMethod :
+ *              type : string
+ *              default : cash
+ *          paymentStatus :
+ *              type : string
+ *              default : pending
+ *          status :
+ *              type : string
+ *              default : processing
+ *          createdAt :
+ *              type : string
+ *              default : 2023-10-2
+ */
 const orderSchema = new mongoose_1.Schema({
     userId: {
         type: mongoose_1.Schema.Types.ObjectId,

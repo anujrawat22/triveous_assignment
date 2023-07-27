@@ -55,7 +55,7 @@ const productRouter = (0, express_1.Router)();
  * @openapi
  * /api/product/:id:
  *    get:
- *       summary : This is for the user to signup
+ *       summary : Api for user to get products by category id
  *       tags : [Product]
  *
  */
@@ -64,7 +64,7 @@ productRouter.get("/:id", productController_1.getProductbyCategory);
  * @openapi
  * /api/product/getProduct/:id:
  *    get:
- *       summary : This is for the user to signup
+ *       summary : Api for user to get product details by id
  *       tags : [Product]
  */
 productRouter.get("/getProduct/:id", productController_1.getProductById);
@@ -72,7 +72,7 @@ productRouter.get("/getProduct/:id", productController_1.getProductById);
  * @openapi
  * /api/product/create:
  *    post:
- *       summary : This is for the user to signup
+ *       summary : Api for admin to create product
  *       tags : [Product]
  *       requestBody :
  *           required : true
@@ -89,7 +89,7 @@ productRouter.post("/create", (0, authorizationMiddleware_1.rbacMiddleware)([use
  * @openapi
  * /api/product/update/:id:
  *    patch:
- *       summary : This is for the user to signup
+ *       summary : Api for admin to update product by id
  *       tags : [Product]
  */
 productRouter.patch("/update/:id", (0, authorizationMiddleware_1.rbacMiddleware)([userModel_1.UserRole.ADMIN]), productController_1.updateProduct);
@@ -97,7 +97,7 @@ productRouter.patch("/update/:id", (0, authorizationMiddleware_1.rbacMiddleware)
  * @openapi
  * /api/product/delete/:id:
  *    delete:
- *       summary : This is for the user to signup
+ *       summary : Api for admin to delete a product by id
  *       tags : [Product]
  */
 productRouter.delete("/delete/:id", (0, authorizationMiddleware_1.rbacMiddleware)([userModel_1.UserRole.ADMIN]), productController_1.deleteProduct);

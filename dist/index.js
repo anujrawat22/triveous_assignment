@@ -41,7 +41,7 @@ const options = {
             }
         ]
     },
-    apis: ['./src/index.ts', './src/routes/*.ts'], // files containing annotations as above
+    apis: ['./src/index.ts', './src/routes/*.ts', './src/models/*.ts'], // files containing annotations as above
 };
 const openapiSpecification = (0, swagger_jsdoc_1.default)(options);
 app.use(express_1.default.json());

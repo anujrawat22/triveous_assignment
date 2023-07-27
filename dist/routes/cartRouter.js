@@ -14,7 +14,7 @@ const cartRouter = (0, express_1.Router)();
  * @openapi
  * /api/cart/:
  *    get:
- *       summary : This is for the user to signup
+ *       summary :Api  for the user to get his cart data
  *       tags : [Cart]
  */
 cartRouter.get("/", cartController_1.getCart);
@@ -22,7 +22,7 @@ cartRouter.get("/", cartController_1.getCart);
  * @openapi
  * /api/cart/usercart/:id:
  *    get:
- *       summary : This is for the user to signup
+ *       summary : Api for the admin to get the cart data of user by it's id
  *       tags : [Cart]
  */
 cartRouter.get("/usercart/:id", (0, authorizationMiddleware_1.rbacMiddleware)([userModel_1.UserRole.ADMIN]), cartController_1.getCartbyId);
@@ -30,7 +30,7 @@ cartRouter.get("/usercart/:id", (0, authorizationMiddleware_1.rbacMiddleware)([u
  * @openapi
  * /api/cart/create:
  *    get:
- *       summary : This is for the user to signup
+ *       summary : Api for adding items to cart
  *       tags : [Cart]
  */
 cartRouter.post("/create", cartController_1.addtoCart);
@@ -38,7 +38,7 @@ cartRouter.post("/create", cartController_1.addtoCart);
  * @openapi
  * /api/cart/update/:productId:
  *    patch:
- *       summary : This is for the user to signup
+ *       summary : Api for the user to update to items in his cart
  *       tags : [Cart]
  */
 cartRouter.patch("/update/:productId", cartController_1.updateCart);
@@ -46,7 +46,7 @@ cartRouter.patch("/update/:productId", cartController_1.updateCart);
  * @openapi
  * /api/cart/:productId:
  *    delete:
- *       summary : This is for the user to signup
+ *       summary : Api for user to delete items in his cart
  *       tags : [Cart]
  */
 cartRouter.delete("/:productId", cartController_1.deleteCartItem);
