@@ -37,7 +37,7 @@ export const addProduct =async (req:Request, res : Response) => {
     try {
         const findProduct = await Product.findOne({title, model , brand})
         if(findProduct){
-            return res.status(400).json({error : "Product already exists , try updating the product"})
+            return res.status(400).json({error : "Product already exists"})
         }
        
         const product  = new Product({title,price,description, specification, category_id,images,mainImage,brand,model,colours,warrantyPeriod})

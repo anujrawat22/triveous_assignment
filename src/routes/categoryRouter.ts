@@ -2,6 +2,7 @@ import { Router } from "express";
 import { createCategory, getAllCategory } from "../controllers/categoryController";
 import { rbacMiddleware } from "../middlewares/authorizationMiddleware";
 import { UserRole } from "../models/userModel";
+import { authMiddlware } from "../middlewares/authenticationMiddleware";
 
 const categoryRouter = Router()
 
@@ -31,7 +32,7 @@ categoryRouter.get("/",getAllCategory)
  *       summary : This is for the admin to create category
  *       tags : [Category]
  */
-categoryRouter.post("/",rbacMiddleware([UserRole.ADMIN]),createCategory)
+categoryRouter.post("/",authMiddlware,rbacMiddleware([UserRole.ADMIN]),createCategory)
 
 
 export default categoryRouter;

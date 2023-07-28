@@ -57,6 +57,18 @@ const productRouter = (0, express_1.Router)();
  *    get:
  *       summary : Api for user to get products by category id
  *       tags : [Product]
+ *       responses :
+ *          201 :
+ *              description : All products data
+ *              content :
+ *                 application/json :
+ *                    schema :
+ *                      type : object
+ *                      item :
+ *                         $ref  : "#/components/schemas/Product"
+ *          500 :
+ *                description : server error message
+ *
  *
  */
 productRouter.get("/:id", productController_1.getProductbyCategory);

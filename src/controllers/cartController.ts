@@ -105,7 +105,7 @@ import { Cart, ICart } from "../models/cartModel";
         if(existingProductIndex !== -1){
             cart.products[existingProductIndex].quantity = quantity;
             await cart.save()
-            res.status(201).json({msg : "Cart updated" , data : cart})
+            res.status(201).json({msg : "Cart   updated" , data : cart})
         }else{
             res.status(404).json({error : "Item in cart not found"})
         }

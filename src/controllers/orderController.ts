@@ -81,7 +81,7 @@ export const getOrderbyId =async (req:Request , res : Response) => {
              order = await Order.findOne({_id : id ,userId : userId })
         }
         if(!order){
-            return res.status(404).json({error : 'Order not found'})
+            return res.status(404).json({error : '  '})
         }
 
         return res.status(201).json({msg : `Order data of id - ${id}`,data : order})

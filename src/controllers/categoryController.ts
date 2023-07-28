@@ -21,10 +21,16 @@ export const getAllCategory = async (req: Request, res: Response) => {
 
 
 export const createCategory = async(req : Request , res : Response)=>{
+  const {
+    name , description , parentCategory , subCategories } = req.body
+  
     try {
-        
+        const category = new Category({name,description,parentCategory,})
+        await category.save()
+        res.status(201).json({msg : "Category created" , data : category })
     } catch (error) {
-        
+        console.log('Error in creating category' , error);
+        res.status(500).send({error : 'Server error'})
     }
 }
 

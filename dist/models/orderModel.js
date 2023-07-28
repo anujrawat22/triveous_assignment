@@ -42,10 +42,10 @@ const mongoose_1 = __importStar(require("mongoose"));
  *         - status
  *         - createdAt
  *      properties :
- *         userId :
+ *          userId :
  *            type : string
  *            default : ObjectId('64ab9737fb19c893fd4ea6fe')
- *         total :
+ *          total :
  *             type : number
  *             default : 2
  *          shippingAddress :

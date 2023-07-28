@@ -34,10 +34,10 @@ export interface IOrder extends Document {
  *         - status
  *         - createdAt
  *      properties : 
- *         userId : 
+ *          userId : 
  *            type : string
  *            default : ObjectId('64ab9737fb19c893fd4ea6fe')
- *         total : 
+ *          total : 
  *             type : number
  *             default : 2
  *          shippingAddress : 

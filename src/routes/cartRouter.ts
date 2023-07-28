@@ -13,9 +13,9 @@ const cartRouter = Router()
 
 /**
  * @openapi
- * /api/cart/:
+ * /api/cart:
  *    get: 
- *       summary :Api  for the user to get his cart data
+ *       summary : Api for the user to get his cart data
  *       tags : [Cart]
  */
 
