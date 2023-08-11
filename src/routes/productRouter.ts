@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { addProduct, deleteProduct, getProductById, getProductbyCategory, updateProduct } from "../controllers/productController";
+import { addProduct, deleteProduct, getProductById, getProductbyCategory,  productSearch,  updateProduct } from "../controllers/productController";
 import { rbacMiddleware } from "../middlewares/authorizationMiddleware";
 import { UserRole } from "../models/userModel";
-
+import { Request, Response } from "express";
+import { IProduct, Product } from "../models/productModel";
 const productRouter = Router()
 
 /**
@@ -75,7 +76,7 @@ const productRouter = Router()
  *       
  */
 
-productRouter.get("/:id",getProductbyCategory)
+productRouter.get("/search/:id",getProductbyCategory)
 
 
 /**
@@ -105,7 +106,7 @@ productRouter.get("/getProduct/:id",getProductById)
  *          201 : 
  *             description : 
  */
-productRouter.post("/create",rbacMiddleware([UserRole.ADMIN]),addProduct)
+productRouter.post("/create",addProduct)
 
 
 /**
@@ -126,5 +127,8 @@ productRouter.patch("/update/:id",rbacMiddleware([UserRole.ADMIN]),updateProduct
  *       tags : [Product]
  */
 productRouter.delete("/delete/:id",rbacMiddleware([UserRole.ADMIN]),deleteProduct)
+
+
+productRouter.get("/searchProduct",productSearch)
 
 export default productRouter

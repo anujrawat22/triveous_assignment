@@ -83,7 +83,7 @@ const getOrderbyId = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             order = yield orderModel_1.Order.findOne({ _id: id, userId: userId });
         }
         if (!order) {
-            return res.status(404).json({ error: 'Order not found' });
+            return res.status(404).json({ error: '  ' });
         }
         return res.status(201).json({ msg: `Order data of id - ${id}`, data: order });
     }

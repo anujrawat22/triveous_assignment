@@ -32,9 +32,15 @@ const getAllCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getAllCategory = getAllCategory;
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, description, parentCategory, subCategories } = req.body;
     try {
+        const category = new categoryModel_1.Category({ name, description, parentCategory, });
+        yield category.save();
+        res.status(201).json({ msg: "Category created", data: category });
     }
     catch (error) {
+        console.log('Error in creating category', error);
+        res.status(500).send({ error: 'Server error' });
     }
 });
 exports.createCategory = createCategory;

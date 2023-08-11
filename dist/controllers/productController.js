@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.addProduct = exports.getProductById = exports.getProductbyCategory = void 0;
+exports.productSearch = exports.deleteProduct = exports.updateProduct = exports.addProduct = exports.getProductById = exports.getProductbyCategory = void 0;
 const productModel_1 = require("../models/productModel");
 const getProductbyCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -43,13 +43,13 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getProductById = getProductById;
 const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, price, description, specification, category_id, images, mainImage, brand, model, colours, warrantyPeriod } = req.body;
+    const { title, price, description, specification, images, mainImage, brand, model, colours, warrantyPeriod, categoryId } = req.body;
     try {
         const findProduct = yield productModel_1.Product.findOne({ title, model, brand });
         if (findProduct) {
-            return res.status(400).json({ error: "Product already exists , try updating the product" });
+            return res.status(400).json({ error: "Product already exists" });
         }
-        const product = new productModel_1.Product({ title, price, description, specification, category_id, images, mainImage, brand, model, colours, warrantyPeriod });
+        const product = new productModel_1.Product({ title, price, description, specification, categoryId, images, mainImage, brand, model, colours, warrantyPeriod });
         yield product.save();
         return res.status(201).send({ msg: "Product created succesfully" });
     }
@@ -92,3 +92,20 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteProduct = deleteProduct;
+const productSearch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { search } = req.query;
+    try {
+        const product = yield productModel_1.Product.find({
+            $or: [
+                { title: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ]
+        });
+        res.send({ data: product });
+    }
+    catch (error) {
+        console.log("Error getting product data :", error);
+        res.status(500).send({ error: "Server error" });
+    }
+});
+exports.productSearch = productSearch;

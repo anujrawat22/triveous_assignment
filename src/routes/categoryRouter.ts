@@ -32,7 +32,7 @@ categoryRouter.get("/",getAllCategory)
  *       summary : This is for the admin to create category
  *       tags : [Category]
  */
-categoryRouter.post("/",authMiddlware,rbacMiddleware([UserRole.ADMIN]),createCategory)
+categoryRouter.post("/",createCategory)
 
 
 export default categoryRouter;

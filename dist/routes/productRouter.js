@@ -71,7 +71,7 @@ const productRouter = (0, express_1.Router)();
  *
  *
  */
-productRouter.get("/:id", productController_1.getProductbyCategory);
+productRouter.get("/search/:id", productController_1.getProductbyCategory);
 /**
  * @openapi
  * /api/product/getProduct/:id:
@@ -96,7 +96,7 @@ productRouter.get("/getProduct/:id", productController_1.getProductById);
  *          201 :
  *             description :
  */
-productRouter.post("/create", (0, authorizationMiddleware_1.rbacMiddleware)([userModel_1.UserRole.ADMIN]), productController_1.addProduct);
+productRouter.post("/create", productController_1.addProduct);
 /**
  * @openapi
  * /api/product/update/:id:
@@ -113,4 +113,5 @@ productRouter.patch("/update/:id", (0, authorizationMiddleware_1.rbacMiddleware)
  *       tags : [Product]
  */
 productRouter.delete("/delete/:id", (0, authorizationMiddleware_1.rbacMiddleware)([userModel_1.UserRole.ADMIN]), productController_1.deleteProduct);
+productRouter.get("/searchProduct", productController_1.productSearch);
 exports.default = productRouter;

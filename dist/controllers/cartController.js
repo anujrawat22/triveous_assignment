@@ -100,7 +100,7 @@ const updateCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (existingProductIndex !== -1) {
             cart.products[existingProductIndex].quantity = quantity;
             yield cart.save();
-            res.status(201).json({ msg: "Cart updated", data: cart });
+            res.status(201).json({ msg: "Cart   updated", data: cart });
         }
         else {
             res.status(404).json({ error: "Item in cart not found" });
